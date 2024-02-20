@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Ignore Keys ###
+**/key.priv
+**/key.pub
