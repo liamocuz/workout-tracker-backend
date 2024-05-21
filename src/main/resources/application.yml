@@ -1,1 +1,23 @@
-jwt.private.key=classpath:app.key
+logging:
+  level:
+    root: INFO
+    org:
+      springframework.web: INFO
+      springframework.security: INFO
+      hibernate:
+        sql: DEBUG
+        type.descriptor.BasicBinder: TRACE
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/workout_db"
+    username: "workout_user"
+    password: ""
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: workout
+        format_sql: true
