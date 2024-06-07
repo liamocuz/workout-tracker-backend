@@ -1,5 +1,6 @@
 package com.liamocuz.workouttracker.entity;
 
+import com.liamocuz.workouttracker.model.WeightInfo;
 import jakarta.persistence.*;
 
 /**

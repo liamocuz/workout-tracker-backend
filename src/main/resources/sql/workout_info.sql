@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS user_info (
 );
 CREATE INDEX IF NOT EXISTS user_info_email_idx
     ON user_info(email);
-CREATE INDEX IF NOT EXISTS user_info_first_last_name_idx
-    ON user_info(first_name, last_name);
 
 -- Pre-made workouts created by the user
 CREATE TABLE IF NOT EXISTS workout (
@@ -50,15 +48,6 @@ CREATE INDEX IF NOT EXISTS workout_instance_start_time_idx
 CREATE INDEX IF NOT EXISTS workout_instance_template_id_idx
     ON workout_instance(template_id);
 
--- Defines a type of exercise
--- Should only be updated by an ADMIN. Users cannot modify these
-CREATE TABLE IF NOT EXISTS strength_exercise_type (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    muscle_group VARCHAR(255) NOT NULL,
-    UNIQUE (name, muscle_group)
-);
-
 -- Defines a strength exercise
 CREATE TABLE IF NOT EXISTS strength_exercise (
     id BIGSERIAL PRIMARY KEY,
@@ -70,10 +59,10 @@ CREATE TABLE IF NOT EXISTS strength_exercise (
     weight REAL NOT NULL CHECK ( weight > 0 ),
     sets INT NOT NULL CHECK ( sets > 0 ),
     reps INT NOT NULL CHECK ( reps > 0 ),
+    muscle_group VARCHAR(255) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE,
     is_archived BOOLEAN DEFAULT false,
-    exercise_type_id BIGINT NOT NULL REFERENCES strength_exercise_type(id),
     user_id BIGINT NOT NULL REFERENCES user_info(id) ON DELETE CASCADE,
     UNIQUE (user_id, name)
 );

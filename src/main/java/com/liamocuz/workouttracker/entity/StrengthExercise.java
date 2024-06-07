@@ -1,5 +1,7 @@
 package com.liamocuz.workouttracker.entity;
 
+import com.liamocuz.workouttracker.model.MuscleGroup;
+import com.liamocuz.workouttracker.model.WeightInfo;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,21 +10,21 @@ public class StrengthExercise extends Exercise {
     @Embedded
     private WeightInfo weightInfo;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "exercise_type_id")
-    private StrengthExerciseType exerciseType;
+    @Column(name = "muscle_group")
+    @Enumerated(value = EnumType.STRING)
+    private MuscleGroup muscleGroup;
 
     public StrengthExercise() { }
 
-    public StrengthExercise(Long userId, String name, String description, WeightInfo weightInfo, StrengthExerciseType exerciseType) {
+    public StrengthExercise(Long userId, String name, String description, WeightInfo weightInfo, MuscleGroup muscleGroup) {
         super(userId, name, description);
         this.weightInfo = weightInfo;
-        this.exerciseType = exerciseType;
+        this.muscleGroup = muscleGroup;
     }
 
     @Override
     public String toString() {
-        return "StrengthExercise{weightInfo=%s, exerciseType=%s} %s".formatted(weightInfo, exerciseType, super.toString());
+        return "StrengthExercise{weightInfo=%s, muscleGroup=%s} %s".formatted(weightInfo, muscleGroup, super.toString());
     }
 
     public WeightInfo getWeightInfo() {
@@ -31,13 +33,5 @@ public class StrengthExercise extends Exercise {
 
     public void setWeightInfo(WeightInfo weightInfo) {
         this.weightInfo = weightInfo;
-    }
-
-    public StrengthExerciseType getExerciseType() {
-        return exerciseType;
-    }
-
-    public void setExerciseType(StrengthExerciseType exerciseType) {
-        this.exerciseType = exerciseType;
     }
 }
