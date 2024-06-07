@@ -75,7 +75,7 @@ CREATE INDEX IF NOT EXISTS strength_exercise_created_at_idx
 -- Defines the saved values for a strength exercise of a workout template
 CREATE TABLE IF NOT EXISTS workout_strength_exercise_value (
     id BIGSERIAL PRIMARY KEY,
-    weight REAL NOT NULL CHECK ( weight > 0 ),
+    weight REAL NOT NULL CHECK ( weight >= 0 ),
     sets INT NOT NULL CHECK ( sets > 0 ),
     reps INT NOT NULL CHECK ( reps > 0 ),
     strength_exercise_id BIGINT NOT NULL REFERENCES strength_exercise(id) ON DELETE CASCADE
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS strength_exercise_instance (
     start_time TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     -- This weight info will be copied into a new row in the instance table to make sure it
     -- won't be updated by any changes to the template id
-    weight REAL NOT NULL CHECK ( weight > 0 ),
+    weight REAL NOT NULL CHECK ( weight >= 0 ),
     sets INT NOT NULL CHECK ( sets > 0 ),
     reps INT NOT NULL CHECK ( reps > 0 ),
     exercise_id BIGINT NOT NULL REFERENCES strength_exercise(id),
