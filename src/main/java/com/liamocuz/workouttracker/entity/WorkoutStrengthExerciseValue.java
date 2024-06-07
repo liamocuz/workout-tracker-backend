@@ -6,8 +6,8 @@ import jakarta.persistence.*;
  * Represents the saved values for a Strength Exercise in a Workout Template
  */
 @Entity
-@Table(name = "workout_template_strength_exercise_value")
-public class WorkoutTemplateStrengthExerciseValue {
+@Table(name = "workout_strength_exercise_value")
+public class WorkoutStrengthExerciseValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,7 +20,12 @@ public class WorkoutTemplateStrengthExerciseValue {
     @JoinColumn(name = "strength_exercise_id")
     private StrengthExercise strengthExercise;
 
-    public WorkoutTemplateStrengthExerciseValue() { }
+    public WorkoutStrengthExerciseValue() { }
+
+    public WorkoutStrengthExerciseValue(WeightInfo weightInfo, StrengthExercise strengthExercise) {
+        this.weightInfo = weightInfo;
+        this.strengthExercise = strengthExercise;
+    }
 
     @Override
     public String toString() {

@@ -6,24 +6,25 @@ import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Set;
 
-@Entity
-@Table(name = "workout_template")
-public class WorkoutTemplate {
+@MappedSuperclass
+public abstract class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @CreationTimestamp(source = SourceType.DB)
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant createdAt;
 
     @UpdateTimestamp(source = SourceType.VM)
@@ -31,27 +32,19 @@ public class WorkoutTemplate {
     private Instant updatedAt;
 
     @Column(name = "is_archived")
-    private boolean isArchived;
+    private boolean isArchived = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "workout_template_join_strength_exercise_value",
-            joinColumns = @JoinColumn(name = "workout_template_id"),
-            inverseJoinColumns = @JoinColumn(name = "strength_exercise_value_id")
-    )
-    private Set<WorkoutTemplateStrengthExerciseValue> strengthExerciseValues;
+    public Exercise() { }
 
-    public WorkoutTemplate() { }
-
-    public WorkoutTemplate(String name, String description, boolean isArchived) {
+    public Exercise(Long userId, String name, String description) {
+        this.userId = userId;
         this.name = name;
         this.description = description;
-        this.isArchived = isArchived;
     }
 
     @Override
     public String toString() {
-        return "WorkoutTemplate{id=%d, name='%s', description='%s', createdAt=%s, updatedAt=%s, isArchived=%s, strengthExerciseValues=%s}".formatted(id, name, description, createdAt, updatedAt, isArchived, strengthExerciseValues);
+        return "Exercise{id=%d, name='%s', description='%s', createdAt=%s, updatedAt=%s, isArchived=%s}".formatted(id, name, description, createdAt, updatedAt, isArchived);
     }
 
     public Long getId() {
@@ -60,6 +53,14 @@ public class WorkoutTemplate {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -100,21 +101,5 @@ public class WorkoutTemplate {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
-    }
-
-    public Set<WorkoutTemplateStrengthExerciseValue> getStrengthExerciseValues() {
-        return strengthExerciseValues;
-    }
-
-    public void setStrengthExerciseValues(Set<WorkoutTemplateStrengthExerciseValue> strengthExerciseValues) {
-        this.strengthExerciseValues = strengthExerciseValues;
-    }
-
-    public void addStrengthExerciseValue(WorkoutTemplateStrengthExerciseValue exerciseValue) {
-        this.strengthExerciseValues.add(exerciseValue);
-    }
-
-    public void removeStrengthExerciseValue(WorkoutTemplateStrengthExerciseValue exerciseValue) {
-        this.strengthExerciseValues.remove(exerciseValue);
     }
 }

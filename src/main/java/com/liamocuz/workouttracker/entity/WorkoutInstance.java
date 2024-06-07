@@ -4,6 +4,7 @@ import com.liamocuz.workouttracker.model.WorkoutFeeling;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,9 @@ public class WorkoutInstance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "start_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant startTime;
@@ -29,7 +33,7 @@ public class WorkoutInstance {
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "template_id")
-    private WorkoutTemplate workoutTemplate;
+    private Workout workout;
 
     @ManyToMany
     @JoinTable(
@@ -37,16 +41,18 @@ public class WorkoutInstance {
             joinColumns = @JoinColumn(name = "workout_instance_id"),
             inverseJoinColumns = @JoinColumn(name = "strength_exercise_instance_id")
     )
-    private Set<StrengthExerciseInstance> strengthExerciseInstanceSet;
+    private Set<StrengthExerciseInstance> strengthExerciseInstances;
 
     public WorkoutInstance() { }
 
-    public WorkoutInstance(Instant startTime, Instant endTime, WorkoutFeeling feeling, String notes, WorkoutTemplate workoutTemplate) {
+    public WorkoutInstance(Long userId, Instant startTime, Instant endTime, WorkoutFeeling feeling, String notes, Workout workout) {
+        this.userId = userId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.feeling = feeling;
         this.notes = notes;
-        this.workoutTemplate = workoutTemplate;
+        this.workout = workout;
+        this.strengthExerciseInstances = new HashSet<>();
     }
 
     public Long getId() {
@@ -55,6 +61,14 @@ public class WorkoutInstance {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Instant getStartTime() {
@@ -89,27 +103,27 @@ public class WorkoutInstance {
         this.notes = notes;
     }
 
-    public WorkoutTemplate getWorkoutTemplate() {
-        return workoutTemplate;
+    public Workout getWorkoutTemplate() {
+        return workout;
     }
 
-    public void setWorkoutTemplate(WorkoutTemplate workoutTemplate) {
-        this.workoutTemplate = workoutTemplate;
+    public void setWorkoutTemplate(Workout workout) {
+        this.workout = workout;
     }
 
-    public Set<StrengthExerciseInstance> getStrengthExerciseInstanceSet() {
-        return strengthExerciseInstanceSet;
+    public Set<StrengthExerciseInstance> getStrengthExerciseInstances() {
+        return strengthExerciseInstances;
     }
 
-    public void setStrengthExerciseInstanceSet(Set<StrengthExerciseInstance> strengthExerciseInstanceSet) {
-        this.strengthExerciseInstanceSet = strengthExerciseInstanceSet;
+    public void setStrengthExerciseInstances(Set<StrengthExerciseInstance> strengthExerciseInstances) {
+        this.strengthExerciseInstances = strengthExerciseInstances;
     }
 
     public void addStrengthExerciseInstance(StrengthExerciseInstance exerciseInstance) {
-        this.strengthExerciseInstanceSet.add(exerciseInstance);
+        this.strengthExerciseInstances.add(exerciseInstance);
     }
 
     public void removeStrengthExerciseInstance(StrengthExerciseInstance exerciseInstance) {
-        this.strengthExerciseInstanceSet.remove(exerciseInstance);
+        this.strengthExerciseInstances.remove(exerciseInstance);
     }
 }

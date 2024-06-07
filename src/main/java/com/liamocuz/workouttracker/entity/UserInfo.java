@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_info")
@@ -50,6 +51,24 @@ public class UserInfo {
     @Override
     public String toString() {
         return "UserInfo{id=%d, email='%s', firstName='%s', lastName='%s', isVerified=%s, createdAt=%s, lastWorkout=%s, workoutStreak=%d, metricUnits=%s}".formatted(id, email, firstName, lastName, isVerified, createdAt, lastWorkout, workoutStreak, metricUnits);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserInfo userInfo = (UserInfo) o;
+        return isVerified == userInfo.isVerified && workoutStreak == userInfo.workoutStreak && metricUnits == userInfo.metricUnits && Objects.equals(id, userInfo.id) && email.equals(userInfo.email) && firstName.equals(userInfo.firstName) && lastName.equals(userInfo.lastName) && Objects.equals(createdAt, userInfo.createdAt) && Objects.equals(lastWorkout, userInfo.lastWorkout);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + email.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
     }
 
     public Long getId() {
