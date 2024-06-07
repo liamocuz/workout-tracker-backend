@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Workout Tracker
+  description: Workout Tracker
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /workouts:
+    get:
+      description: Returns all workout templates
+
+  /workouts/{workoutId}:
+    get:
+      description: Returns a single workout template
+
+  /workouts/instances:
+    get:
+      description: Returns all workout instances
+
+  /workouts/instances/{instanceId}:
+    get:
+      description: Returns a single workout instance
+
+
+  /exercises:
+    get:
+      description: Returns all exercise templates
+
+  /exercises/{exerciseId}:
+    get:
+      description: Returns a single exercise template
+
+  /exercises/instances:
+    get:
+      description: Returns all exercise instances
+
+  /exercises/instances/{instanceId}:
+    get:
+      description: Returns a single exercise instance
