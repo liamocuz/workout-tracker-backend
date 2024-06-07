@@ -56,15 +56,14 @@ CREATE TABLE IF NOT EXISTS strength_exercise (
     -- These can be default values that the user will set
     -- At each workout start, the user will choose from the list of exercise templates
     -- and then be prompted if these values are correct. If not, they will update for current exercise
-    weight REAL NOT NULL CHECK ( weight > 0 ),
+    weight REAL NOT NULL CHECK ( weight >= 0 ),
     sets INT NOT NULL CHECK ( sets > 0 ),
     reps INT NOT NULL CHECK ( reps > 0 ),
     muscle_group VARCHAR(255) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE,
     is_archived BOOLEAN DEFAULT false,
-    user_id BIGINT NOT NULL REFERENCES user_info(id) ON DELETE CASCADE,
-    UNIQUE (user_id, name)
+    user_id BIGINT NOT NULL REFERENCES user_info(id) ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS strength_exercise_user_id_idx
     ON strength_exercise(user_id);
