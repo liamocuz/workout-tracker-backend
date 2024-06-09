@@ -3,6 +3,7 @@ package com.liamocuz.workouttracker.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -25,20 +26,24 @@ public class UserInfo {
     private String lastName;
 
     @Column(name = "is_verified")
-    private boolean isVerified;
+    private boolean isVerified = false;
 
     @CreationTimestamp(source = SourceType.DB)
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @UpdateTimestamp(source = SourceType.VM)
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private Instant updatedAt;
+
     @Column(name = "last_workout")
     private Instant lastWorkout;
 
     @Column(name = "workout_streak")
-    private int workoutStreak;      // in days
+    private int workoutStreak = 0;          // in days
 
     @Column(name = "metric_units")
-    private boolean metricUnits;    // true = uses metric
+    private boolean metricUnits = false;    // true = uses metric
 
     public UserInfo() { }
 
@@ -50,24 +55,41 @@ public class UserInfo {
 
     @Override
     public String toString() {
-        return "UserInfo{id=%d, email='%s', firstName='%s', lastName='%s', isVerified=%s, createdAt=%s, lastWorkout=%s, workoutStreak=%d, metricUnits=%s}".formatted(id, email, firstName, lastName, isVerified, createdAt, lastWorkout, workoutStreak, metricUnits);
+        return "UserInfo{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isVerified=" + isVerified +
+                ", createdAt=" + createdAt +
+                ", lastWorkout=" + lastWorkout +
+                ", workoutStreak=" + workoutStreak +
+                ", metricUnits=" + metricUnits +
+                '}';
     }
 
+    /**
+     * Only need to compare id, email, and first name and last name
+     * @param o the object compared to
+     * @return if the object is equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         UserInfo userInfo = (UserInfo) o;
-        return isVerified == userInfo.isVerified && workoutStreak == userInfo.workoutStreak && metricUnits == userInfo.metricUnits && Objects.equals(id, userInfo.id) && email.equals(userInfo.email) && firstName.equals(userInfo.firstName) && lastName.equals(userInfo.lastName) && Objects.equals(createdAt, userInfo.createdAt) && Objects.equals(lastWorkout, userInfo.lastWorkout);
+        return Objects.equals(id, userInfo.id) && Objects.equals(email, userInfo.email) && Objects.equals(firstName, userInfo.firstName) && Objects.equals(lastName, userInfo.lastName);
     }
 
+    /**
+     * Hashing with just the id and email (unique) is sufficient
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
         result = 31 * result + email.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
         return result;
     }
 
@@ -119,6 +141,14 @@ public class UserInfo {
         this.createdAt = createdAt;
     }
 
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Instant getLastWorkout() {
         return lastWorkout;
     }
@@ -135,7 +165,7 @@ public class UserInfo {
         this.workoutStreak = workoutStreak;
     }
 
-    public boolean isMetricUnits() {
+    public boolean usesMetricUnits() {
         return metricUnits;
     }
 
