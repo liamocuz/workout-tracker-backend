@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS user_info (
     last_name VARCHAR(255) NOT NULL,
     is_verified BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE,
     last_workout TIMESTAMP WITH TIME ZONE,
     workout_streak INT DEFAULT 0,
     metric_units BOOLEAN DEFAULT false
