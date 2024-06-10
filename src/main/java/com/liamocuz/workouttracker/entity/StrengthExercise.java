@@ -24,8 +24,13 @@ public class StrengthExercise extends Exercise {
 
     @Override
     public String toString() {
-        return "StrengthExercise{weightInfo=%s, muscleGroup=%s} %s".formatted(weightInfo, muscleGroup, super.toString());
+        return "StrengthExercise{" +
+                "weightInfo=" + weightInfo +
+                ", muscleGroup=" + muscleGroup +
+                "} " + super.toString();
     }
+
+
 
     public WeightInfo getWeightInfo() {
         return weightInfo;
@@ -33,5 +38,13 @@ public class StrengthExercise extends Exercise {
 
     public void setWeightInfo(WeightInfo weightInfo) {
         this.weightInfo = weightInfo;
+    }
+
+    public MuscleGroup getMuscleGroup() {
+        return muscleGroup;
+    }
+
+    public void setMuscleGroup(MuscleGroup muscleGroup) {
+        this.muscleGroup = muscleGroup;
     }
 }
