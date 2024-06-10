@@ -6,6 +6,7 @@ import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @MappedSuperclass
 public abstract class Exercise {
@@ -44,7 +45,32 @@ public abstract class Exercise {
 
     @Override
     public String toString() {
-        return "Exercise{id=%d, name='%s', description='%s', createdAt=%s, updatedAt=%s, isArchived=%s}".formatted(id, name, description, createdAt, updatedAt, isArchived);
+        return "Exercise{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", isArchived=" + isArchived +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Exercise exercise = (Exercise) o;
+        return Objects.equals(id, exercise.id) && Objects.equals(userId, exercise.userId) && Objects.equals(name, exercise.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(userId);
+        result = 31 * result + Objects.hashCode(name);
+        return result;
     }
 
     public Long getId() {
