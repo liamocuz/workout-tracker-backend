@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -43,9 +44,11 @@ public class Workout {
             joinColumns = @JoinColumn(name = "workout_id"),
             inverseJoinColumns = @JoinColumn(name = "strength_exercise_value_id")
     )
-    private Set<WorkoutStrengthExerciseValue> strengthExerciseValues;
+    private Set<StrengthExerciseValue> strengthExerciseValues;
 
-    public Workout() { }
+    public Workout() {
+        this.strengthExerciseValues = new HashSet<>();
+    }
 
     public Workout(Long userId, String name, String description) {
         this.userId = userId;
@@ -56,7 +59,32 @@ public class Workout {
 
     @Override
     public String toString() {
-        return "WorkoutTemplate{id=%d, name='%s', description='%s', createdAt=%s, updatedAt=%s, isArchived=%s, strengthExerciseValues=%s}".formatted(id, name, description, createdAt, updatedAt, isArchived, strengthExerciseValues);
+        return "Workout{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", isArchived=" + isArchived +
+                ", strengthExerciseValues=" + strengthExerciseValues +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Workout workout = (Workout) o;
+        return Objects.equals(getUserId(), workout.getUserId()) && Objects.equals(getName(), workout.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(getUserId());
+        result = 31 * result + Objects.hashCode(getName());
+        return result;
     }
 
     public Long getId() {
@@ -115,19 +143,19 @@ public class Workout {
         isArchived = archived;
     }
 
-    public Set<WorkoutStrengthExerciseValue> getStrengthExerciseValues() {
+    public Set<StrengthExerciseValue> getStrengthExerciseValues() {
         return strengthExerciseValues;
     }
 
-    public void setStrengthExerciseValues(Set<WorkoutStrengthExerciseValue> strengthExerciseValues) {
+    public void setStrengthExerciseValues(Set<StrengthExerciseValue> strengthExerciseValues) {
         this.strengthExerciseValues = strengthExerciseValues;
     }
 
-    public void addStrengthExerciseValue(WorkoutStrengthExerciseValue exerciseValue) {
+    public void addStrengthExerciseValue(StrengthExerciseValue exerciseValue) {
         this.strengthExerciseValues.add(exerciseValue);
     }
 
-    public void removeStrengthExerciseValue(WorkoutStrengthExerciseValue exerciseValue) {
+    public void removeStrengthExerciseValue(StrengthExerciseValue exerciseValue) {
         this.strengthExerciseValues.remove(exerciseValue);
     }
 }
