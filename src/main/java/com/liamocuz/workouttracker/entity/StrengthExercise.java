@@ -3,9 +3,6 @@ package com.liamocuz.workouttracker.entity;
 import com.liamocuz.workouttracker.model.MuscleGroup;
 import com.liamocuz.workouttracker.model.WeightInfo;
 import jakarta.persistence.*;
-import org.hibernate.proxy.HibernateProxy;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "strength_exercise")
