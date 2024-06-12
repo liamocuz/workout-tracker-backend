@@ -56,20 +56,29 @@ public abstract class Exercise {
                 '}';
     }
 
+    /**
+     * Two objects are equal if their id, userId, and name are equal
+     * userId and name must be unique
+     * @param o the object compared to
+     * @return if the objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Exercise exercise = (Exercise) o;
-        return Objects.equals(id, exercise.id) && Objects.equals(userId, exercise.userId) && Objects.equals(name, exercise.name);
+        return Objects.equals(getUserId(), exercise.getUserId()) && Objects.equals(getName(), exercise.getName());
     }
 
+    /**
+     * userId and name must be a unique combination
+     * @return the hashCode value
+     */
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(userId);
-        result = 31 * result + Objects.hashCode(name);
+        int result = Objects.hashCode(getUserId());
+        result = 31 * result + Objects.hashCode(getName());
         return result;
     }
 
