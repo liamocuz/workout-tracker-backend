@@ -8,10 +8,10 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StrengthExerciseTest {
+class StrengthExerciseTest {
 
     @Test
-    public void testObjectCreation() {
+    void testObjectCreation() {
         // Initialize all fields
         WeightInfo weightInfo = new WeightInfo(100, 10, 1);
         StrengthExercise exercise = new StrengthExercise(1L, "Push Ups", "An upper body exercise", weightInfo, MuscleGroup.CHEST);
@@ -50,12 +50,13 @@ public class StrengthExerciseTest {
     }
 
     @Test
-    public void testEqualsAndHashcode() {
+    void testEqualsAndHashcode() {
         WeightInfo weightInfo = new WeightInfo(100, 10, 1);
         StrengthExercise exercise1 = new StrengthExercise(1L, "Push Ups", "An upper body exercise", weightInfo, MuscleGroup.CHEST);
         exercise1.setId(1L);
 
         // Test equals method
+        // They will be the same if the id, userId, and name are the same
         assertEquals(exercise1, exercise1);
         assertNotEquals(exercise1, null);
         assertNotEquals(exercise1, new Object());
@@ -71,19 +72,24 @@ public class StrengthExerciseTest {
         assertEquals(exercise1, exercise2);
 
         // Test hashcode
+        // They will be the same if the userId and name are the same
         assertEquals(exercise1.hashCode(), exercise2.hashCode());
         exercise2.setId(2L);
-        assertNotEquals(exercise1.hashCode(), exercise2.hashCode());
+        assertEquals(exercise1.hashCode(), exercise2.hashCode());
         exercise2.setId(exercise1.getId());
         exercise2.setUserId(2L);
         assertNotEquals(exercise1.hashCode(), exercise2.hashCode());
         exercise2.setUserId(exercise1.getUserId());
         exercise2.setName("Test Name");
         assertNotEquals(exercise1.hashCode(), exercise2.hashCode());
+
+        // Both userIds and names are null
+        assertEquals(new StrengthExercise(), new StrengthExercise());
+        assertEquals(new StrengthExercise().hashCode(), new StrengthExercise().hashCode());
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         WeightInfo weightInfo = new WeightInfo(100, 10, 10);
         StrengthExercise exercise = new StrengthExercise();
         exercise.setId(2L);

@@ -6,10 +6,10 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserInfoTest {
+class UserInfoTest {
 
     @Test
-    public void testObjectCreation() {
+    void testObjectCreation() {
         UserInfo userInfo = new UserInfo("test@test.com", "Test", "User");
         userInfo.setId(1L);
         assertEquals(1L, userInfo.getId());
@@ -53,40 +53,44 @@ public class UserInfoTest {
     }
 
     @Test
-    public void testEqualsAndHashCode() {
+    void testEqualsAndHashCode() {
         UserInfo userInfo1 = new UserInfo("test1@test.com", "Test1", "User1");
         userInfo1.setId(1L);
 
-        // Test equals method
-        assertNotEquals(userInfo1, null);
         assertEquals(userInfo1, userInfo1);
+        assertNotEquals(userInfo1, null);
         assertNotEquals(userInfo1, new Object());
 
         UserInfo userInfo2 = new UserInfo("test2@test.com", "Test2", "User2");
         userInfo2.setId(2L);
-        assertNotNull(userInfo2);
 
+        // Test equals method
         assertNotEquals(userInfo1, userInfo2);
+
         userInfo2.setId(1L);
         assertNotEquals(userInfo1, userInfo2);
+
         userInfo2.setEmail("test1@test.com");
-        assertNotEquals(userInfo1, userInfo2);
-        userInfo2.setFirstName("Test1");
-        assertNotEquals(userInfo1, userInfo2);
-        userInfo2.setLastName("User1");
         assertEquals(userInfo1, userInfo2);
 
-        // Test hashcode
-        assertEquals(userInfo1.hashCode(), userInfo2.hashCode());
+        // Test hashCode method
         userInfo2.setId(2L);
-        assertNotEquals(userInfo1.hashCode(), userInfo2.hashCode());
-        userInfo2.setId(1L);
         userInfo2.setEmail("test2@test.com");
         assertNotEquals(userInfo1.hashCode(), userInfo2.hashCode());
+
+        userInfo2.setId(1L);
+        assertNotEquals(userInfo1.hashCode(), userInfo2.hashCode());
+
+        userInfo2.setEmail("test1@test.com");
+        assertEquals(userInfo1.hashCode(), userInfo2.hashCode());
+
+        // Both emails are null
+        assertEquals(new UserInfo(), new UserInfo());
+        assertEquals(new UserInfo().hashCode(), new UserInfo().hashCode());
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         UserInfo userInfo = new UserInfo();
         userInfo.setEmail("test@test.com");
         userInfo.setFirstName("Test");
