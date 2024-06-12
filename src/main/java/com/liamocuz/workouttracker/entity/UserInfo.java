@@ -2,6 +2,7 @@ package com.liamocuz.workouttracker.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,7 +17,8 @@ public class UserInfo {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email", unique = true)
+    @NaturalId
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "first_name", nullable = false)
@@ -69,7 +71,7 @@ public class UserInfo {
     }
 
     /**
-     * Only need to compare id, email, and first name and last name
+     * Only need to compare id and email (unique)
      * @param o the object compared to
      * @return if the object is equal
      */
@@ -79,7 +81,7 @@ public class UserInfo {
         if (o == null || getClass() != o.getClass()) return false;
 
         UserInfo userInfo = (UserInfo) o;
-        return Objects.equals(id, userInfo.id) && Objects.equals(email, userInfo.email) && Objects.equals(firstName, userInfo.firstName) && Objects.equals(lastName, userInfo.lastName);
+        return Objects.equals(getEmail(), userInfo.getEmail());
     }
 
     /**
@@ -88,9 +90,7 @@ public class UserInfo {
      */
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + email.hashCode();
-        return result;
+        return Objects.hashCode(getEmail());
     }
 
     public Long getId() {
