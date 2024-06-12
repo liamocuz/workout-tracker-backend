@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -45,14 +46,42 @@ public class WorkoutInstance {
 
     public WorkoutInstance() { }
 
-    public WorkoutInstance(Long userId, Instant startTime, Instant endTime, WorkoutFeeling feeling, String notes, Workout workout) {
+    public WorkoutInstance(Long userId, Workout workout, Instant startTime, Instant endTime, WorkoutFeeling feeling, String notes) {
         this.userId = userId;
+        this.workout = workout;
         this.startTime = startTime;
         this.endTime = endTime;
         this.feeling = feeling;
         this.notes = notes;
-        this.workout = workout;
         this.strengthExerciseInstances = new HashSet<>();
+    }
+
+    @Override
+    public String toString() {
+        return "WorkoutInstance{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", feeling=" + feeling +
+                ", notes='" + notes + '\'' +
+                ", workout='" + workout.getName() + '\'' +
+                ", strengthExerciseInstances=" + strengthExerciseInstances +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WorkoutInstance that = (WorkoutInstance) o;
+        return id != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     public Long getId() {
@@ -103,11 +132,11 @@ public class WorkoutInstance {
         this.notes = notes;
     }
 
-    public Workout getWorkoutTemplate() {
+    public Workout getWorkout() {
         return workout;
     }
 
-    public void setWorkoutTemplate(Workout workout) {
+    public void setWorkout(Workout workout) {
         this.workout = workout;
     }
 
