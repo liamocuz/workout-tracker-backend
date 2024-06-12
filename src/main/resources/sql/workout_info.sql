@@ -64,7 +64,8 @@ CREATE TABLE IF NOT EXISTS strength_exercise (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE,
     is_archived BOOLEAN DEFAULT false,
-    user_id BIGINT NOT NULL REFERENCES user_info(id) ON DELETE CASCADE
+    user_id BIGINT NOT NULL REFERENCES user_info(id) ON DELETE CASCADE,
+    UNIQUE(user_id, name)
 );
 CREATE INDEX IF NOT EXISTS strength_exercise_user_id_idx
     ON strength_exercise(user_id);
