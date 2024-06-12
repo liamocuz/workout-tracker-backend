@@ -4,6 +4,7 @@ import com.liamocuz.workouttracker.model.WeightInfo;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "strength_exercise_instance")
@@ -12,6 +13,9 @@ public class StrengthExerciseInstance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "start_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant startTime;
@@ -25,10 +29,36 @@ public class StrengthExerciseInstance {
 
     public StrengthExerciseInstance() { }
 
-    public StrengthExerciseInstance(Instant startTime, WeightInfo weightInfo, StrengthExercise strengthExercise) {
+    public StrengthExerciseInstance(Long userId, Instant startTime, WeightInfo weightInfo, StrengthExercise strengthExercise) {
+        this.userId = userId;
         this.startTime = startTime;
         this.weightInfo = weightInfo;
         this.strengthExercise = strengthExercise;
+    }
+
+    @Override
+    public String toString() {
+        return "StrengthExerciseInstance{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", startTime=" + startTime +
+                ", weightInfo=" + weightInfo +
+                ", strengthExercise='" + strengthExercise.getName() + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StrengthExerciseInstance instance = (StrengthExerciseInstance) o;
+        return id != null && Objects.equals(getId(), instance.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     public Long getId() {
@@ -37,6 +67,14 @@ public class StrengthExerciseInstance {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Instant getStartTime() {
